@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Time & Cost Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+                        text-align: center;
+max-width: 1139px;
+
+        }
+        label, select, input, button {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        select, input {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .results, .places {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: left;
+            color: #333;
+        }
+        .places ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .places li {
+            margin-bottom: 8px;
+        }
+        .loading {
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        .reset-btn {
+            background-color: #f44336;
+        }
+        .reset-btn:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Travel Time & Cost Calculator</h1>
+       
+        <label for="starting-city">Select Starting City:</label>
+        <select id="starting-city">
+            <option value="Delhi">Delhi</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Bangalore">Bangalore</option>
+        <option value="Chennai">Chennai</option>
+        <option value="chandigarh">chandigarh</option>
+        <option value="Kolkata">Kolkata</option>
+        <option value="Jaipur">Jaipur</option>
+        <option value="Ahmedabad">Ahmedabad</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Lucknow">Lucknow</option>
+        <option value="Amritsar">Amritsar</option>
+        <option value="Goa">Goa</option>
+        <option value="Patna">Patna</option>
+        <option value="Vijayawada">Vijayawada</option>
+        <option value="Madurai">Madurai</option>
+        <option value="Tirupati">Tirupati</option>
+        <option value="Kochi">Kochi</option>
+        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+        <option value="Coimbatore">Coimbatore</option>
+<option value="vishakapatnam">vishakapatnam</option>
+ <option value="mysore">mysore</option>
+ <option value="agartala">agartala</option>
+ <option value="vadodora">vadodara</option>
+ <option value="raipur">raipur</option>
+        </select>
+
+        <label for="destination-city">Select Destination City:</label>
+        <select id="destination-city">
+            <option value="Delhi">Delhi</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Bangalore">Bangalore</option>
+        <option value="Chennai">Chennai</option>
+        <option value="chandigarh">chandigarh</option>
+        <option value="Kolkata">Kolkata</option>
+        <option value="Jaipur">Jaipur</option>
+        <option value="Ahmedabad">Ahmedabad</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Lucknow">Lucknow</option>
+        <option value="Amritsar">Amritsar</option>
+        <option value="Goa">Goa</option>
+        <option value="Patna">Patna</option>
+        <option value="Vijayawada">Vijayawada</option>
+        <option value="Madurai">Madurai</option>
+        <option value="Tirupati">Tirupati</option>
+        <option value="Kochi">Kochi</option>
+        <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+        <option value="Coimbatore">Coimbatore</option>
+<option value="vishakapatnam">vishakapatnam</option>
+ <option value="mysore">mysore</option>
+ <option value="agartala">agartala</option>
+ <option value="vadodora">vadodara</option>
+ <option value="raipur">raipur</option>
+        </select>
+
+        <label for="mode">Select Mode of Transport:</label>
+        <select id="mode">
+            <option value="car">Car</option>
+            <option value="bus">Bus</option>
+            <option value="train">Train</option>
+            <option value="flight">Flight</option>
+            <option value="bike">Bike</option>
+        </select>
+
+        <div id="bus-class-container" class="hidden">
+            <label for="bus-class">Select Bus Class:</label>
+            <select id="bus-class">
+                <option value="ac">AC</option>
+                <option value="non-ac">Non-AC</option>
+            </select>
+        </div>
+
+        <div id="train-class-container" class="hidden">
+            <label for="train-class">Select Train Class:</label>
+            <select id="train-class">
+                <option value="sleeper">Sleeper</option>
+                <option value="general">General</option>
+                <option value="ac">AC</option>
+            </select>
+        </div>
+
+        <button onclick="calculateTimeAndCost()">Calculate</button>
+        <button class="reset-btn" onclick="resetForm()">Reset</button>
+
+        <div id="loading" class="loading hidden">Calculating...</div>
+
+        <div id="results" class="results"></div>
+
+        <div id="places" class="places">
+            <h3>Suggested Places to Visit:</h3>
+            <button onclick="redirectToSuggestedPlaces()">Suggest Places</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for distances between cities
+        const distanceData = {
+           
+                "cities": {
+                "Mumbai": {
+                    "Chennai": 1300,
+                "Bangalore": 980,
+                "Kolkata": 2000,
+                "Hyderabad": 700,
+                "Jaipur": 1200,
+                "Chandigarh": 1600,
+                "Lucknow": 1600,
+                "Amritsar": 1600,
+                "Patna": 1600,
+                "Goa": 430,
+                "Ahmedabad": 525,
+                "Vijayawada": 1500,
+                "Tirupati": 1400,
+                "Madurai": 1600,
+                "Kochi": 1400,
+                "Thiruvananthapuram": 1550,
+                "Coimbatore": 1400,
+                "Visakhapatnam": 1400,
+                "Mysore": 1600,
+                "Vadodara": 550,
+                "Raipur": 1250,
+                "Agartala": 2050
+                },
+                "Delhi": {
+                    "Mumbai": 1400,
+      "Chennai": 2200,
+      "Bangalore": 2100,
+      "Kolkata": 1500,
+      "Hyderabad": 1600,
+      "Jaipur": 280,
+      "Chandigarh": 250,
+      "Lucknow": 500,
+      "Amritsar": 450,
+      "Patna": 1050,
+      "Goa": 1900,
+      "Ahmedabad": 940,
+      "Vijaywada": 1700,
+      "Tirupati": 1800,
+      "Madurai": 2200,
+      "Kochi": 2100,
+      "Thiruvananthapuram": 2500,
+      "Coimbatore": 2200,
+      "Vishakapatnam": 1900,
+      "Mysore": 2200,
+      "Vadodara": 1000,
+      "Agartala": 2200,
+      "Raipur": 1200
+               
+                },
+"Vijayawada": {
+    "Mumbai": 1500,
+    "Chennai": 650,
+    "Bangalore": 900,
+    "Kolkata": 1700,
+    "Hyderabad": 350,
+    "Jaipur": 1800,
+    "Chandigarh": 2100,
+    "Lucknow": 2100,
+    "Amritsar": 2200,
+    "Patna": 2200,
+    "Goa": 1700,
+    "Ahmedabad": 1800,
+    "Tirupati": 180,
+    "Madurai": 1500,
+    "Kochi": 1300,
+    "Thiruvananthapuram": 1200,
+    "Coimbatore": 1200,
+    "Visakhapatnam": 350,
+    "Mysore": 1300,
+    "Vadodara": 1700,
+    "Agartala": 1900,
+    "Raipur": 900
+
+},
+"Chennai": {
+    "Mumbai": 1300,
+    "Bangalore": 350,
+    "Kolkata": 1700,
+    "Hyderabad": 660,
+    "Jaipur": 2000,
+    "Chandigarh": 2200,
+    "Lucknow": 2300,
+    "Amritsar": 2400,
+    "Patna": 2200,
+    "Goa": 1300,
+    "Ahmedabad": 1900,
+    "Vijayawada": 650,
+    "Tirupati": 150,
+    "Madurai": 290,
+    "Kochi": 540,
+    "Thiruvananthapuram": 700,
+    "Coimbatore": 400,
+    "Visakhapatnam": 1450,
+    "Mysore": 200,
+    "Vadodara": 2000,
+    "Raipur": 2200,
+    "Agartala": 2400
+  },
+"Bangalore": {
+    "Mumbai": 980,
+    "Chennai": 350,
+    "Kolkata": 1850,
+    "Hyderabad": 650,
+    "Jaipur": 1900,
+    "Chandigarh": 2400,
+    "Lucknow": 2200,
+    "Amritsar": 2300,
+    "Patna": 2300,
+    "Goa": 660,
+    "Ahmedabad": 1800,
+    "Vijayawada": 900,
+    "Tirupati": 700,
+    "Madurai": 550,
+    "Kochi": 440,
+    "Thiruvananthapuram": 700,
+    "Coimbatore": 300,
+    "Visakhapatnam": 1600,
+    "Mysore": 150,
+    "Vadodara": 1700,
+    "Raipur": 2100,
+    "Agartala": 2300
+  },
+  "Kolkata": {
+    "Mumbai": 2000,
+    "Chennai": 1700,
+    "Bangalore": 1850,
+    "Hyderabad": 1200,
+    "Jaipur": 1700,
+    "Chandigarh": 1500,
+    "Lucknow": 1300,
+    "Amritsar": 1500,
+    "Patna": 300,
+    "Goa": 2100,
+    "Ahmedabad": 1700,
+    "Vijayawada": 1700,
+    "Tirupati": 1850,
+    "Madurai": 1900,
+    "Kochi": 1750,
+    "Thiruvananthapuram": 1900,
+    "Coimbatore": 1800,
+    "Visakhapatnam": 800,
+    "Mysore": 1850,
+    "Vadodara": 1700,
+    "Raipur": 1100,
+    "Agartala": 1000
+  },
+  "Hyderabad": {
+    "Mumbai": 700,
+    "Chennai": 660,
+    "Bangalore": 650,
+    "Kolkata": 1200,
+    "Jaipur": 1500,
+    "Chandigarh": 1900,
+    "Lucknow": 1800,
+    "Amritsar": 1900,
+    "Patna": 1800,
+    "Goa": 900,
+    "Ahmedabad": 1300,
+    "Vijayawada": 350,
+    "Tirupati": 600,
+    "Madurai": 850,
+    "Kochi": 750,
+    "Thiruvananthapuram": 900,
+    "Coimbatore": 800,
+    "Visakhapatnam": 650,
+    "Mysore": 800,
+    "Vadodara": 1300,
+    "Raipur": 1200,
+    "Agartala": 2000
+  },
+"Jaipur": {
+    "Mumbai": 1200,
+    "Chennai": 2000,
+    "Bangalore": 1900,
+    "Kolkata": 1700,
+    "Hyderabad": 1500,
+    "Chandigarh": 250,
+    "Lucknow": 550,
+    "Amritsar": 350,
+    "Patna": 1600,
+    "Goa": 1800,
+    "Ahmedabad": 650,
+    "Vijayawada": 1800,
+    "Tirupati": 1900,
+    "Madurai": 2000,
+    "Kochi": 2000,
+    "Thiruvananthapuram": 2200,
+    "Coimbatore": 2000,
+    "Visakhapatnam": 1800,
+    "Mysore": 1900,
+    "Vadodara": 700,
+    "Raipur": 1500,
+    "Agartala": 2100
+  },
+  "Chandigarh": {
+    "Mumbai": 1600,
+    "Chennai": 2200,
+    "Bangalore": 2400,
+    "Kolkata": 1500,
+    "Hyderabad": 1900,
+    "Jaipur": 250,
+    "Lucknow": 500,
+    "Amritsar": 230,
+    "Patna": 1300,
+    "Goa": 1600,
+    "Ahmedabad": 1250,
+    "Vijayawada": 2100,
+    "Tirupati": 2150,
+    "Madurai": 2300,
+    "Kochi": 2150,
+    "Thiruvananthapuram": 2300,
+    "Coimbatore": 2200,
+    "Visakhapatnam": 1700,
+    "Mysore": 2300,
+    "Vadodara": 1200,
+    "Raipur": 1400,
+    "Agartala": 2100
+  },
+  "Lucknow": {
+    "Mumbai": 1600,
+    "Chennai": 2300,
+    "Bangalore": 2200,
+    "Kolkata": 1300,
+    "Hyderabad": 1800,
+    "Jaipur": 550,
+    "Chandigarh": 500,
+    "Amritsar": 450,
+    "Patna": 400,
+    "Goa": 1600,
+    "Ahmedabad": 1250,
+    "Vijayawada": 2100,
+    "Tirupati": 2200,
+    "Madurai": 2300,
+    "Kochi": 2300,
+    "Thiruvananthapuram": 2400,
+    "Coimbatore": 2300,
+    "Visakhapatnam": 2000,
+    "Mysore": 2200,
+    "Vadodara": 1300,
+    "Raipur": 1200,
+    "Agartala": 2300
+  },
+  "Amritsar": {
+    "Mumbai": 1600,
+    "Chennai": 2400,
+    "Bangalore": 2300,
+    "Kolkata": 1500,
+    "Hyderabad": 1900,
+    "Jaipur": 350,
+    "Chandigarh": 230,
+    "Lucknow": 450,
+    "Patna": 1600,
+    "Goa": 1800,
+    "Ahmedabad": 1600,
+    "Vijayawada": 2200,
+    "Tirupati": 2300,
+    "Madurai": 2400,
+    "Kochi": 2300,
+    "Thiruvananthapuram": 2400,
+    "Coimbatore": 2400,
+    "Visakhapatnam": 2200,
+    "Mysore": 2300,
+    "Vadodara": 1500,
+    "Raipur": 1800,
+    "Agartala": 2000
+  },
+  "Patna": {
+    "Mumbai": 1600,
+    "Chennai": 2200,
+    "Bangalore": 2300,
+    "Kolkata": 300,
+    "Hyderabad": 1800,
+    "Jaipur": 1600,
+    "Chandigarh": 1300,
+    "Lucknow": 400,
+    "Amritsar": 1600,
+    "Goa": 2100,
+    "Ahmedabad": 1700,
+    "Vijayawada": 2200,
+    "Tirupati": 2300,
+    "Madurai": 2400,
+    "Kochi": 2300,
+    "Thiruvananthapuram": 2400,
+    "Coimbatore": 2200,
+    "Visakhapatnam": 2200,
+    "Mysore": 2300,
+    "Vadodara": 1700,
+    "Raipur": 1400,
+    "Agartala": 1200
+  },
+  "Goa": {
+    "Mumbai": 430,
+    "Chennai": 1300,
+    "Bangalore": 660,
+    "Kolkata": 2100,
+    "Hyderabad": 900,
+    "Jaipur": 1800,
+    "Chandigarh": 1600,
+    "Lucknow": 1600,
+    "Amritsar": 1800,
+    "Patna": 2100,
+    "Ahmedabad": 1200,
+    "Vijayawada": 1700,
+    "Tirupati": 1600,
+    "Madurai": 1700,
+    "Kochi": 1600,
+    "Thiruvananthapuram": 1700,
+    "Coimbatore": 1600,
+    "Visakhapatnam": 1600,
+    "Mysore": 1600,
+    "Vadodara": 1400,
+    "Raipur": 1500,
+    "Agartala": 2000
+  },
+  "Ahmedabad": {
+    "Mumbai": 525,
+    "Chennai": 1900,
+    "Bangalore": 1800,
+    "Kolkata": 1700,
+    "Hyderabad": 1300,
+    "Jaipur": 650,
+    "Chandigarh": 1250,
+    "Lucknow": 1250,
+    "Amritsar": 1600,
+    "Patna": 1700,
+    "Goa": 1200,
+    "Vijayawada": 1800,
+    "Tirupati": 1900,
+    "Madurai": 2000,
+    "Kochi": 1900,
+    "Thiruvananthapuram": 2100,
+    "Coimbatore": 2000,
+    "Visakhapatnam": 1800,
+    "Mysore": 2000,
+    "Vadodara": 35,
+    "Raipur": 1500,
+    "Agartala": 2300
+ 
+},
+ "Tirupati": {
+    "Mumbai": 1400,
+    "Chennai": 150,
+    "Bangalore": 700,
+    "Kolkata": 1850,
+    "Hyderabad": 600,
+    "Jaipur": 1900,
+    "Chandigarh": 2150,
+    "Lucknow": 2200,
+    "Amritsar": 2300,
+    "Patna": 2300,
+    "Goa": 1600,
+    "Ahmedabad": 1900,
+    "Vijayawada": 180,
+    "Tirupati": 0,
+    "Madurai": 1400,
+    "Kochi": 1100,
+    "Thiruvananthapuram": 650,
+    "Coimbatore": 650,
+    "Visakhapatnam": 700,
+    "Mysore": 1200,
+    "Vadodara": 1600,
+    "Agartala": 1800,
+    "Raipur": 800
+ 
+},
+
+  "Madurai": {
+    "Mumbai": 1600,
+    "Chennai": 290,
+    "Bangalore": 550,
+    "Kolkata": 1900,
+    "Hyderabad": 850,
+    "Jaipur": 2000,
+    "Chandigarh": 2300,
+    "Lucknow": 2300,
+    "Amritsar": 2400,
+    "Patna": 2400,
+    "Goa": 1300,
+    "Ahmedabad": 1600,
+    "Vijayawada": 1500,
+    "Tirupati": 1400,
+    "Madurai": 0,
+    "Kochi": 300,
+    "Thiruvananthapuram": 300,
+    "Coimbatore": 400,
+    "Visakhapatnam": 1500,
+    "Mysore": 450,
+    "Vadodara": 1600,
+    "Agartala": 2200,
+    "Raipur": 1700
+  },
+               
+
+  "Kochi": {
+    "Mumbai": 1300,
+    "Chennai": 540,
+    "Bangalore": 440,
+    "Kolkata": 1750,
+    "Hyderabad": 750,
+    "Jaipur": 2000,
+    "Chandigarh": 2150,
+    "Lucknow": 2300,
+    "Amritsar": 2300,
+    "Patna": 2300,
+    "Goa": 660,
+    "Ahmedabad": 1600,
+    "Vijayawada": 1300,
+    "Tirupati": 1100,
+    "Madurai": 300,
+    "Kochi": 0,
+    "Thiruvananthapuram": 200,
+    "Coimbatore": 200,
+    "Visakhapatnam": 1700,
+    "Mysore": 270,
+    "Vadodara": 1600,
+    "Agartala": 2100,
+    "Raipur": 1600
+  },
+  "Thiruvananthapuram": {
+    "Mumbai": 1600,
+    "Chennai": 700,
+    "Bangalore": 800,
+    "Kolkata": 2000,
+    "Hyderabad": 1000,
+    "Jaipur": 2100,
+    "Chandigarh": 2300,
+    "Lucknow": 2400,
+    "Amritsar": 2500,
+    "Patna": 2400,
+    "Goa": 1500,
+    "Ahmedabad": 1900,
+    "Vijayawada": 1200,
+    "Tirupati": 650,
+    "Madurai": 300,
+    "Kochi": 200,
+    "Thiruvananthapuram": 0,
+    "Coimbatore": 250,
+    "Visakhapatnam": 1700,
+    "Mysore": 600,
+    "Vadodara": 1800,
+    "Agartala": 2300,
+    "Raipur": 1800
+ 
+},
+  "Coimbatore": {
+    "Mumbai": 1600,
+    "Chennai": 500,
+    "Bangalore": 250,
+    "Kolkata": 1900,
+    "Hyderabad": 900,
+    "Jaipur": 2000,
+    "Chandigarh": 2200,
+    "Lucknow": 2300,
+    "Amritsar": 2400,
+    "Patna": 2400,
+    "Goa": 800,
+    "Ahmedabad": 1500,
+    "Vijayawada": 1200,
+    "Tirupati": 650,
+    "Madurai": 400,
+    "Kochi": 200,
+    "Thiruvananthapuram": 250,
+    "Coimbatore": 0,
+    "Visakhapatnam": 1600,
+    "Mysore": 150,
+    "Vadodara": 1600,
+    "Agartala": 2200,
+    "Raipur": 1700
+  },
+
+  "Visakhapatnam": {
+    "Mumbai": 1300,
+    "Chennai": 670,
+    "Bangalore": 930,
+    "Kolkata": 650,
+    "Hyderabad": 650,
+    "Jaipur": 1800,
+    "Chandigarh": 2000,
+    "Lucknow": 2100,
+    "Amritsar": 2200,
+    "Patna": 2200,
+    "Goa": 1200,
+    "Ahmedabad": 1500,
+    "Vijayawada": 350,
+    "Tirupati": 700,
+    "Madurai": 1500,
+    "Kochi": 1700,
+    "Thiruvananthapuram": 1700,
+    "Coimbatore": 1600,
+    "Visakhapatnam": 0,
+    "Mysore": 1300,
+    "Vadodara": 1500,
+    "Agartala": 2100,
+    "Raipur": 600
+  },
+
+  "Mysore": {
+    "Mumbai": 1300,
+    "Chennai": 540,
+    "Bangalore": 150,
+    "Kolkata": 1750,
+    "Hyderabad": 700,
+    "Jaipur": 1800,
+    "Chandigarh": 2100,
+    "Lucknow": 2200,
+    "Amritsar": 2300,
+    "Patna": 2300,
+    "Goa": 650,
+    "Ahmedabad": 1500,
+    "Vijayawada": 1300,
+    "Tirupati": 1200,
+    "Madurai": 450,
+    "Kochi": 270,
+    "Thiruvananthapuram": 600,
+    "Coimbatore": 150,
+    "Visakhapatnam": 1300,
+    "Mysore": 0,
+    "Vadodara": 1600,
+    "Agartala": 2200,
+    "Raipur": 1600
+  },
+
+  "Vadodara": {
+    "Mumbai": 400,
+    "Chennai": 1700,
+    "Bangalore": 1500,
+    "Kolkata": 1800,
+    "Hyderabad": 1100,
+    "Jaipur": 900,
+    "Chandigarh": 1300,
+    "Lucknow": 1500,
+    "Amritsar": 1600,
+    "Patna": 1600,
+    "Goa": 650,
+    "Ahmedabad": 120,
+    "Vijayawada": 1700,
+    "Tirupati": 1600,
+    "Madurai": 1600,
+    "Kochi": 1600,
+    "Thiruvananthapuram": 1800,
+    "Coimbatore": 1600,
+    "Visakhapatnam": 1500,
+    "Mysore": 1600,
+    "Vadodara": 0,
+    "Agartala": 2200,
+    "Raipur": 1000
+  },
+"Raipur": {
+    "Mumbai": 1100,
+    "Chennai": 1300,
+    "Bangalore": 1400,
+    "Kolkata": 650,
+    "Hyderabad": 500,
+    "Jaipur": 1300,
+    "Chandigarh": 1500,
+    "Lucknow": 1200,
+    "Amritsar": 1600,
+    "Patna": 1050,
+    "Goa": 1300,
+    "Ahmedabad": 1000,
+    "Vijayawada": 1200,
+    "Tirupati": 800,
+    "Madurai": 1700,
+    "Kochi": 1600,
+    "Thiruvananthapuram": 1800,
+    "Coimbatore": 1600,
+    "Visakhapatnam": 600,
+    "Mysore": 1500,
+    "Vadodara": 1000,
+    "Agartala": 1800
+},
+  "Agartala": {
+    "Mumbai": 2200,
+    "Chennai": 2100,
+    "Bangalore": 2200,
+    "Kolkata": 150,
+    "Hyderabad": 1700,
+    "Jaipur": 2100,
+    "Chandigarh": 2000,
+    "Lucknow": 1700,
+    "Amritsar": 2100,
+    "Patna": 700,
+    "Goa": 2300,
+    "Ahmedabad": 2200,
+    "Vijayawada": 1900,
+    "Tirupati": 2000,
+    "Madurai": 2200,
+    "Kochi": 2100,
+    "Thiruvananthapuram": 2300,
+    "Coimbatore": 2200,
+    "Visakhapatnam": 2000,
+    "Mysore": 2200,
+    "Vadodara": 2100,
+    "Raipur": 1800
+  }
+
+
+
+               
+            }
+        };
+
+        // Suggested places to visit for each city
+        const placesToVisit = {
+            "Mumbai": ["Gateway of India", "Marine Drive", "Elephanta Caves", "Chhatrapati Shivaji Maharaj Terminus", "Juhu Beach"],
+            "Delhi": ["Red Fort", "India Gate", "Qutub Minar", "Lotus Temple", "Humayun's Tomb"],
+            "Chennai": ["Marina Beach", "Kapaleeshwarar Temple", "Fort St. George", "Santhome Cathedral Basilica", "Elliot's Beach"],
+            "Goa": ["Baga Beach", "Basilica of Bom Jesus", "Dudhsagar Waterfalls", "Aguada Fort", "Anjuna Flea Market"],
+            "Lucknow": ["Bara Imambara", "Chota Imambara", "Rumi Darwaza", "Ambedkar Memorial Park", "Hazratganj Market"]
+        };
+
+        // Transport modes data
+        const transportModes = {
+            "car": { "speed": 90, "cost_per_km": 15 },
+            "bus": { "ac": { "speed": 50, "cost_per_km": 2.3 }, "non-ac": { "speed": 50, "cost_per_km": 2 } },
+            "train": { "base": { "speed": 86, "cost_per_km": 1 }, "sleeper": { "speed": 86, "cost_per_km": 2.5 }, "general": { "speed": 86, "cost_per_km": 1.5 }, "ac": { "speed": 86, "cost_per_km": 4 } },
+            "flight": { "speed": 650, "cost_per_km": 4 },
+            "bike": { "speed": 60, "cost_per_km": 5 }
+        };
+
+        const startingCitySelect = document.getElementById("starting-city");
+        const destinationCitySelect = document.getElementById("destination-city");
+        const modeSelect = document.getElementById("mode");
+        const trainClassContainer = document.getElementById("train-class-container");
+        const busClassContainer = document.getElementById("bus-class-container");
+        const loadingIndicator = document.getElementById("loading");
+
+        // Update the destination cities based on the selected starting city
+        function updateDestinationCities() {
+            const startingCity = startingCitySelect.value;
+            const destinationCities = distanceData.cities[startingCity] || [];
+            destinationCitySelect.innerHTML = "";
+
+            for (const destination in destinationCities) {
+                const option = document.createElement("option");
+                option.value = destination;
+                option.textContent = destination;
+                destinationCitySelect.appendChild(option);
+            }
+        }
+
+        // Show or hide the class dropdowns based on selected transport mode
+        modeSelect.addEventListener("change", function() {
+            if (modeSelect.value === "train") {
+                trainClassContainer.classList.remove("hidden");
+                busClassContainer.classList.add("hidden");
+            } else if (modeSelect.value === "bus") {
+                busClassContainer.classList.remove("hidden");
+                trainClassContainer.classList.add("hidden");
+            } else {
+                trainClassContainer.classList.add("hidden");
+                busClassContainer.classList.add("hidden");
+            }
+        });
+
+        // Calculate time and cost function
+        function calculateTimeAndCost() {
+            const startingCity = startingCitySelect.value;
+            const destinationCity = destinationCitySelect.value;
+            const mode = modeSelect.value;
+
+            loadingIndicator.classList.remove("hidden");
+
+            const distance = distanceData.cities[startingCity][destinationCity];
+            if (!distance) {
+                document.getElementById("results").innerHTML = "Distance data not available.";
+                loadingIndicator.classList.add("hidden");
+                return;
+            }
+
+            let modeData;
+            if (mode === "train") {
+                const trainClass = document.getElementById("train-class").value;
+                modeData = transportModes.train[trainClass] || transportModes.train.base;
+            } else if (mode === "bus") {
+                const busClass = document.getElementById("bus-class").value;
+                modeData = transportModes.bus[busClass];
+            } else {
+                modeData = transportModes[mode];
+            }
+
+            const time = distance / modeData.speed;
+            const cost = distance * modeData.cost_per_km;
+
+            setTimeout(() => {
+                loadingIndicator.classList.add("hidden");
+                document.getElementById("results").innerHTML = `
+                    <h3>Results:</h3>
+                    <p>From ${startingCity} to ${destinationCity}</p>
+                    <p>Mode: ${mode.charAt(0).toUpperCase() + mode.slice(1)}</p>
+                    <p>Distance: ${distance} km</p>
+                    <p>Time: ${time.toFixed(2)} hours</p>
+                    <p>Cost: ₹${cost.toFixed(2)}</p>
+                `;
+            }, 1000);
+        }
+
+        // Redirect to suggested places page
+        function redirectToSuggestedPlaces() {
+            const destinationCity = document.getElementById("destination-city").value;
+            const url = `suggested-places.html?city=${destinationCity}`;
+            window.location.href = url; // Redirect to the next page
+        }
+
+        // Reset the form to initial state
+        function resetForm() {
+            document.getElementById("starting-city").value = "Mumbai";
+            document.getElementById("destination-city").innerHTML = "";
+            updateDestinationCities();
+            document.getElementById("mode").value = "car";
+            document.getElementById("results").innerHTML = "";
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("train-class-container").classList.add("hidden");
+            document.getElementById("bus-class-container").classList.add("hidden");
+        }
+
+        // Initialize destination cities and form
+        updateDestinationCities();
+    </script>
+</body>
+</html>
+
