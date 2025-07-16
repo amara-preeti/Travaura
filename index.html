@@ -8,22 +8,17 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0px;
-            padding: 0px;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+            padding-bottom: 60px; /* Prevent content being hidden by footer */
         }
-
         nav {
             background-color: #333;
             overflow: hidden;
-            width: 100%;
         }
-
         nav a {
             float: left;
             display: block;
@@ -31,27 +26,26 @@
             text-align: center;
             padding: 14px 20px;
             text-decoration: none;
+            transition: background 0.2s, color 0.2s;
         }
-
         nav a:hover {
             background-color: #ddd;
             color: black;
         }
-
         .content {
-            max-width: 1139px;
-            width: 100%;
-            text-align: center;
-            justify-content: center;
-            align-items: center;
+            max-width: 800px;
+            width: 90%;
+            margin: 30px auto 15px auto;
             padding: 30px;
             background-color: #fff;
-            margin: 15px;
             border-radius: 12px;
-            background: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: none; /* All content hidden by default */
         }
-
+        .content.active {
+            display: block;
+        }
         footer {
             text-align: center;
             padding: 10px;
@@ -59,13 +53,35 @@
             color: white;
             position: fixed;
             width: 100%;
+            left: 0;
             bottom: 0;
+            z-index: 100;
+        }
+        input, textarea, button {
+            font-size: 1rem;
+            padding: 8px;
+            width: 80%;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            width: auto;
+            cursor: pointer;
+            background: #333;
+            color: #fff;
+            border: none;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #555;
         }
     </style>
+    <meta name="google-site-verification" content="th4yEO7-B2_4_UkqGMzda0Sw8wu-RkGX3isQbEX6sBg" />
 </head>
 <body>
-
-    <!-- Navigation Bar -->
+    <!-- This is a demo frontend project. No actual login or data storage takes place. -->
     <nav>
         <a href="#home">Home</a>
         <a href="#register">Register</a>
@@ -74,92 +90,117 @@
         <a href="#about">About</a>
     </nav>
 
-    <!-- Content Area -->
-    <div id="home" class="content">
-        <h1>Welcome to Travaura</h1>
-        <p>
-            Plan smart. Travel easy.
+    <main>
+        <section id="home" class="content active">
+            <h1>Welcome to Travaura</h1>
+            <p>
+                Plan smart. Travel easy.<br><br>
+                Travaura is a smart route planner. It is your personal travel companion for exploring India with ease. Calculate travel time and cost between cities, discover the best transport options, and explore must-see destinations.<br><br>
+                Start your journey now!
+            </p>
+        </section>
 
-            Travaura is a smart route planner. It is your personal travel companion for exploring India with ease. Calculate travel time and cost between cities, discover the best transport options, and explore must-visit places at your destination — all in one place.
+        <section id="register" class="content">
+            <h1>Register</h1>
+            <p>Please fill out the form below to register:</p>
+            <form id="registerForm">
+                <input type="text" placeholder="Username" required><br><br>
+                <input type="password" placeholder="Password" required><br><br>
+                <button type="submit">Register</button>
+            </form>
+        </section>
 
-            Start your journey now!
-        </p>
-    </div>
+        <section id="login" class="content">
+            <h1>Login</h1>
+            <p>Please enter your credentials to login:</p>
+            <form id="loginForm">
+                <input type="text" placeholder="Username" required><br><br>
+                <input type="password" placeholder="Password" required><br><br>
+                <button type="submit">Login</button>
+            </form>
+        </section>
 
-    <!-- Register Section -->
-    <div id="register" class="content" style="display:none;">
-        <h1>Register</h1>
-        <p>Please fill out the form below to register:</p>
-        <form id="registerForm">
-            <input type="text" placeholder="Username" required><br><br>
-            <input type="email" placeholder="Email" required><br><br>
-            <input type="password" placeholder="Password" required><br><br>
-            <button type="submit">Register</button>
-        </form>
-    </div>
+        <section id="contact" class="content">
+            <h1>Contact Us</h1>
+            <p>If you have any questions, feel free to contact us:</p>
+            <form id="contactForm" autocomplete="off">
+                <input type="text" placeholder="Your Name" required><br><br>
+                <input type="email" placeholder="Your Email" required><br><br>
+                <textarea placeholder="Your Message" required style="height:80px;"></textarea><br><br>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
 
-    <!-- Login Section -->
-    <div id="login" class="content" style="display:none;">
-        <h1>Login</h1>
-        <p>Please enter your credentials to login:</p>
-        <form id="loginForm">
-            <input type="email" placeholder="Email" required><br><br>
-            <input type="password" placeholder="Password" required><br><br>
-            <button type="submit">Login</button>
-        </form>
-    </div>
+        <section id="about" class="content">
+            <h1>About Us</h1>
+            <p>
+                Travaura is a smart travel planning platform built by passionate students with a vision to make trip planning simple, quick, and informative. Our project was developed as part of a college initiative to encourage practical web development skills and deliver real-world solutions for travelers across India.
+            </p>
+        </section>
+    </main>
 
-    <!-- Contact Section -->
-    <div id="contact" class="content" style="display:none;">
-        <h1>Contact Us</h1>
-        <p>If you have any questions, feel free to contact us:</p>
-        <form action="#">
-            <input type="text" placeholder="Your Name" required><br><br>
-            <input type="email" placeholder="Your Email" required><br><br>
-            <textarea placeholder="Your Message" required></textarea><br><br>
-            <button type="submit">Send Message</button>
-        </form>
-    </div>
-
-    <!-- About Section -->
-    <div id="about" class="content" style="display:none;">
-        <h1>About Us</h1>
-        <p>It is a smart travel planning platform built by passionate students with a vision to make trip planning simple, quick, and informative. Our project was developed as part of a college initiative to combine real-world problem-solving. It helps users calculate travel time and cost between Indian cities and explore top tourist destinations, all within a clean and responsive web interface.</p>
-    </div>
-
-    <!-- Footer -->
     <footer>
         <p>&copy; Smart Route Planner</p>
     </footer>
 
-    <!-- JavaScript to toggle between tabs -->
+    <noscript>
+        <div style="background: #ffefc1; color: #222; padding: 20px; margin: 20px; border-radius: 8px;">
+            This site requires JavaScript to function properly. Please enable JavaScript in your browser.
+        </div>
+    </noscript>
+
     <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Navigation tab logic
         const links = document.querySelectorAll('nav a');
         const sections = document.querySelectorAll('.content');
 
+        function showSection(targetId) {
+            sections.forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) targetSection.classList.add('active');
+            // Update URL hash without jumping
+            history.replaceState(null, '', '#' + targetId);
+        }
+
         links.forEach(link => {
-            link.addEventListener('click', (e) => {
+            link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = e.target.getAttribute('href').substring(1);
-                sections.forEach(section => section.style.display = 'none');
-                document.getElementById(target).style.display = 'block';
+                const target = this.getAttribute('href').substring(1);
+                showSection(target);
             });
         });
 
+        // Show section based on hash on page load
+        if (window.location.hash) {
+            const target = window.location.hash.substring(1);
+            if (document.getElementById(target)) showSection(target);
+        }
+
+        // Register form logic
         document.getElementById('registerForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const sections = document.querySelectorAll('.content');
-            sections.forEach(section => section.style.display = 'none');
-            document.getElementById('login').style.display = 'block';
+            alert('Demo only. No real register.');
+            showSection('login');
         });
 
+        // Login form logic
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            window.location.href = "main.html";
+            alert('Demo only. No real login.');
+            // window.location.href = "main.html"; // Uncomment if main.html exists
         });
-    </script>
 
+        // Contact form logic (demo only)
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    alert('Demo only. No real login.'); 
+    window.location.href = "main.html";  // Redirect to main.html after login
+});
+    });
+       
+
+
+    </script>
 </body>
 </html>
-
-
